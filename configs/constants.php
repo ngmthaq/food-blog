@@ -12,3 +12,13 @@ define('DB_PORT', '3306');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_NAME', 'php');
+
+// Routes
+define('ROUTE_HOMEPAGE', '/');
+define('ROUTE_DETAILS', '/details');
+define('ROUTE_ADD_COMMENT', '/comment/add');
+define('ROUTE_GET_POSTS', '/posts');
+define('ROUTE_CREATE_POST', '/posts/create');
+define('ROUTE_UPDATE_POST', '/posts/update');
+define('ROUTE_DELETE_POST', '/posts');
+define('ROUTE_ADMIN', '/admin/check');

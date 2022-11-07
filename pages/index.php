@@ -1,1 +1,1 @@
-<p>Trang chủ</p>
+<div class="container"></div>

@@ -29,18 +29,22 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="<?php publicPath("img/favicon.ico") ?>" type="image/x-icon">
+    <link rel="stylesheet" href="<?php publicPath("libs/bootstrap-4.6.2/css/bootstrap.min.css") ?>">
+    <link rel="stylesheet" href="<?php publicPath("libs/fontawesome-6.2.0/css/all.min.css") ?>">
+    <link rel="stylesheet" href="<?php publicPath("css/template.css") ?>">
+    <link rel="stylesheet" href="<?php publicPath("css/main.css") ?>">
     <?php include("./components/_head.php") ?>
 </head>
 
 <body>
     <section id="app">
-        <?php include("./components/_header.php") ?>
-        <section class="main">
-            <?php include($page) ?>
-        </section>
-        <?php include("./components/_footer.php") ?>
+        <?php include($page) ?>
     </section>
 
+    <script src="<?php publicPath("libs/jquery-2.2.4/jquery.min.js") ?>"></script>
+    <script src="<?php publicPath("libs/bootstrap-4.6.2/js/bootstrap.min.js") ?>"></script>
+    <script src="<?php publicPath("libs/fontawesome-6.2.0/js/all.min.js") ?>"></script>
+    <script src="<?php publicPath("js/index.js") ?>"></script>
     <?php include("./components/_script.php") ?>
 </body>
 

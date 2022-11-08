@@ -24,7 +24,7 @@ function consoleLog($data)
 
 function publicPath($path)
 {
-    echo "./public/" . $path;
+    echo "/public/" . $path . "?v=" . time();
 }
 
 function uri()

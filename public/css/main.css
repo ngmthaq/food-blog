@@ -21,6 +21,18 @@ h6 {
   display: none;
 }
 
+.required {
+  position: relative;
+}
+
+.required::before {
+  content: "*";
+  color: red;
+  top: 0;
+  right: -10px;
+  position: absolute;
+}
+
 /* HEADER */
 .header {
   background-color: #322e2e;

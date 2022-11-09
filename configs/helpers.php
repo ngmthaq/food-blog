@@ -24,10 +24,17 @@ function consoleLog($data)
 
 function publicPath($path)
 {
-    echo "/public/" . $path . "?v=" . time();
+    $dir = DIR_NAME;
+    echo isLocalhost() ? "/$dir/public/" . $path . "?v=" . time() : "/public/" . $path . "?v=" . time();
 }
 
 function uri()
 {
     return isLocalhost() ? str_replace("/" . DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+}
+
+function route($route)
+{
+    $dir = DIR_NAME;
+    echo isLocalhost() ? "/$dir$route" : $route;
 }

@@ -6,13 +6,15 @@ $isAdmin = false;
 
 <div class="header">
     <div class="container container-flex align-items-center justify-content-between">
-        <a href="/" class="logo">Food Blog</a>
+        <a href="<?php route(ROUTE_HOMEPAGE) ?>" class="logo">Food Blog</a>
         <div class="header-content">
-            <a href="/" id="header-post" class="<?php echo uri() === '/' ? 'nav-active' : '' ?>">Trang chủ</a>
+            <a href="<?php route(ROUTE_HOMEPAGE) ?>" id="header-post" class="<?php echo uri() === ROUTE_HOMEPAGE ? 'nav-active' : '' ?>">
+                Trang chủ
+            </a>
             <?php if ($isLogin) : ?>
-                <a href="/posts/create" id="header-post">Đăng bài</a>
+                <a href="<?php route(ROUTE_CREATE_POST) ?>" id="header-post">Đăng bài</a>
                 <?php if ($isAdmin) : ?>
-                    <a href="/admin/check" id="header-post-management">Quản lý bài viết</a>
+                    <a href="<?php route(ROUTE_ADMIN) ?>" id="header-post-management">Quản lý bài viết</a>
                 <?php endif; ?>
                 <a href="javascript:void(0)" id="header-logout">Đăng xuất</a>
             <?php else : ?>

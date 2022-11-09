@@ -17,9 +17,11 @@
 .box-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .box-container-center {
+  padding-top: 3.2rem;
   margin-right: -3.2rem;
 }
 
@@ -417,9 +419,9 @@
   margin-bottom: 2.8rem;
 }
 .food-deli-title {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 700;
-  line-height: 4.7rem;
+  line-height: 3.7rem;
   font-family: "Roboto+Condensed", sans-serif;
   position: relative;
 }
@@ -429,7 +431,7 @@
   background-color: #d1193f;
   height: 0.8rem;
   width: 100%;
-  bottom: 0;
+  bottom: -12px;
 }
 .food-deli-eye {
   display: flex;
@@ -651,13 +653,21 @@
 }
 .blog-img {
   margin-right: 1.6rem;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+}
+.blog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .blog-content-title {
   margin-bottom: 0.4rem;
 }
 .blog-content-title a {
-  font-size: 2.4rem;
-  line-height: 3.2rem;
+  font-size: 1.4rem;
+  line-height: 1.2rem;
   font-weight: 600;
   color: #383f47;
 }
@@ -666,9 +676,9 @@
   transition: 0.2s linear;
 }
 .blog-desc {
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
-  line-height: 2.2rem;
+  line-height: 1.4rem;
   color: #646d84;
   margin-bottom: 1.2rem;
 }
@@ -689,10 +699,9 @@
 }
 .blog-name {
   color: #383f47;
-  font-size: 1.4rem;
+  font-size: 0.8rem;
   font-weight: 600;
   margin-right: 0.8rem;
-  line-height: 2.2rem;
 }
 .blog-monitor {
   padding: 0.4rem 0.8rem;

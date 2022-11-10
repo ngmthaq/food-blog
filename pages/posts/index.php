@@ -26,7 +26,7 @@ if(isset($_POST['delete']) && isset($_POST['id'])) {
     <div class="main-sidebar-container">
         <div class="main-sidebar-content p-4">
             <h1 class="pb-4">Quản lý bài viết</h1>
-            <table id="datas" class="table table-striped table-bordered" style="width:100%">
+            <table id="datas" class="table table-bordered" style="width:100%">
                 <thead style="color:black;">
                 <th class="text-center col-1">ID bài viết</th>
                 <th class="text-center col-3">Tên bài viết</th>
@@ -71,8 +71,8 @@ if(isset($_POST['delete']) && isset($_POST['id'])) {
                                 </button>
                             </form>
 
-                           <a href="<?php route(); ?>">
-                               <i class="fa-solid fa-peace"></i>
+                           <a href="<?php route(ROUTE_UPDATE_POST, ['id' => $id]); ?>">
+                               <i class="fa-regular fa-pen-to-square"></i>
                            </a>
                         </td>
                     <?php } ?>

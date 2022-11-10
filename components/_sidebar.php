@@ -11,15 +11,25 @@ if (isset($_POST['logout'])) {
 <aside class="sidebar">
     <h1><a href="<?php route(ROUTE_HOMEPAGE) ?>" class="logo">FOOD BLOG</a></h1>
     <p>
-        <a href="<?php route(ROUTE_GET_POSTS) ?>" class="sidebar-link <?php echo uri() === ROUTE_GET_POSTS ? 'sidebar-link-active' : '' ?>">
+        <a href="<?php route(ROUTE_GET_POSTS) ?>"
+           class="sidebar-link <?php echo uri() === ROUTE_GET_POSTS ? 'sidebar-link-active' : '' ?>">
             Danh sách bài viết
         </a>
     </p>
     <p>
-        <a href="<?php route(ROUTE_CREATE_POST) ?>" class="sidebar-link <?php echo uri() === ROUTE_CREATE_POST ? 'sidebar-link-active' : '' ?>">
+        <a href="<?php route(ROUTE_CREATE_POST) ?>"
+           class="sidebar-link <?php echo uri() === ROUTE_CREATE_POST ? 'sidebar-link-active' : '' ?>">
             Thêm bài viết
         </a>
     </p>
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1) : ?>
+        <p>
+            <a href="<?php route(ROUTE_ADMIN) ?>"
+               class="sidebar-link <?php echo uri() === ROUTE_ADMIN ? 'sidebar-link-active' : '' ?>">
+                Duyệt bài viết
+            </a>
+        </p>
+    <?php endif; ?>
     <form id="logout-form" action="<?php echo currentUri() ?>" method="POST" class="d-inline-block w-100">
         <input type="submit" name="logout" value="Đăng xuất" class="sidebar-link bg-transparent border-0">
     </form>

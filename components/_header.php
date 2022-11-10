@@ -1,12 +1,15 @@
 <?php
 
+// Nếu tồn tại message lỗi thì xoá message
 if (isset($_SESSION["login-error"])) {
     unset($_SESSION["login-error"]);
 }
 
+// Kiểm tra user đã đăng nhập hay chưa và phân quyền của user
 $isLogin = isset($_SESSION["user_id"]);
 $isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] == 1;
 
+// Bắt sự kiện người dùng đăng nhập
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -33,6 +36,7 @@ if (isset($_POST['login'])) {
     }
 }
 
+// Bắt sự kiện người dùng đăng xuất
 if (isset($_POST['logout'])) {
     session_unset();
     $_POST = [];
@@ -70,7 +74,7 @@ if (isset($_POST['logout'])) {
 </div>
 
 <?php if (!$isLogin) : ?>
-    <!-- Login modal -->
+    <!-- Form đăng nhập -->
     <div class="modal fade" id="login-model" tabindex="-1" aria-labelledby="login-model-label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -101,7 +105,7 @@ if (isset($_POST['logout'])) {
         </div>
     </div>
 
-    <!-- Register modal -->
+    <!-- Form đăng ký -->
     <div class="modal fade" id="register-model" tabindex="-1" aria-labelledby="register-model-label" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

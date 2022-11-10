@@ -8,6 +8,7 @@ require_once("./configs/database.php");
 require_once("./configs/upload.php");
 
 try {
+    // Điều hướng đến các trang theo url
     $uri = str_replace("/", "\\", $_SERVER["REQUEST_URI"]);
     $uri = explode("?", $uri);
     $uri = isLocalhost() ? str_replace("\\" . DIR_NAME, "", $uri[0]) : $uri[0];
@@ -21,6 +22,13 @@ try {
     include(DIR_TEMPLATE_ROOT . "\\_500.php");
     consoleLog($th);
     die();
+}
+
+// Kiểm tra đăng nhập
+if (empty($_SESSION['user_id']) || $_SESSION['user_id'] === "") {
+    if (in_array(uri(), [ROUTE_ADMIN, ROUTE_GET_POSTS, ROUTE_CREATE_POST, ROUTE_UPDATE_POST])) {
+        redirect(ROUTE_HOMEPAGE);
+    }
 }
 
 ?>

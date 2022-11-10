@@ -5,7 +5,7 @@ class Database
     protected $conn;
     protected $sql;
 
-    // Init database connection
+    // Khởi tạo kết nối với database
     public function __construct()
     {
         $_dbHost = DB_HOST;
@@ -19,13 +19,13 @@ class Database
         $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
-    // Disconnect database
+    // Ngắt kết nối database
     public function __destruct()
     {
         $this->conn = null;
     }
 
-    // Get data from sql
+    // Truy vấn dữ liệu từ sql
     public function get()
     {
         try {
@@ -41,7 +41,7 @@ class Database
         }
     }
 
-    // Excute sql
+    // Thực thi câu lệnh sql
     public function execute()
     {
         try {
@@ -57,11 +57,13 @@ class Database
         }
     }
 
+    // Log sql
     public function log()
     {
         return $this->sql;
     }
 
+    // Khởi tạo câu sql
     public function sql(string $sql)
     {
         $this->sql = $sql;

@@ -1,5 +1,6 @@
 <?php
 
+// Bắt sự kiện người dùng tạo bài viết mới
 if (isset($_POST['create-post'])) {
     try {
         $title = htmlspecialchars($_POST['title']);
@@ -56,12 +57,12 @@ if (isset($_POST['create-post'])) {
 </div>
 
 <script>
+    // Preview ảnh
     let imgInp = document.querySelector("#image");
     let imgPreview = document.querySelector("#img-preview");
 
     imgInp.onchange = function(evt) {
         const file = evt.target.files[0];
-        console.log(file);
         if (file) {
             imgPreview.src = URL.createObjectURL(file);
             imgPreview.style.display = "block";

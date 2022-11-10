@@ -58,7 +58,7 @@ function reload()
 
 function redirect($path)
 {
-    header("Refresh:0; url=$path");
+    header("Location: $path");
 }
 
 function convertUploadFileToB64($file)

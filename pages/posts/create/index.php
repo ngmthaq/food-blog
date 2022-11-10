@@ -8,6 +8,7 @@ if (isset($_POST['create-post'])) {
         $content = htmlspecialchars($_POST['content']);
         $image = $_FILES['image'];
         $imageUrl = uploadFile($image, "public/img/posts");
+        $imageUrl = isLocalhost() ? "/" . DIR_NAME . $imageUrl : $imageUrl;
         $slug = slug($_POST['title']) . "-" . time();
         $userId = $_SESSION['user_id'];
         $db = new Database();

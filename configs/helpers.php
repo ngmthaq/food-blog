@@ -58,6 +58,7 @@ function reload()
 
 function redirect($path)
 {
+    $path = isLocalhost() ? "/" . DIR_NAME . $path : $path;
     header("Location: $path");
 }
 

@@ -8,19 +8,20 @@
                 </div>
                 <?php for ($i = 0; $i < 10; $i++) : ?>
                     <div class="blog-main">
-                        <a href="#">
+                        <a href="<?php route(ROUTE_DETAILS) ?>">
                             <img class="blog-img" src="<?php publicPath("img/blog-img.png") ?>"/>
                         </a>
                         <div class="blog-content">
                             <div>
-                                <h3 class="blog-content-title">
-                                    <a href="#">
+                                <h3 class="blog-content-title limit-text-2">
+                                    <a href="<?php route(ROUTE_DETAILS) ?>">
                                         Trứng cuộn tôm hấp - món ăn bổ dưỡng cho cả nhà trọn vị
                                     </a>
                                 </h3>
-                                <p class="blog-desc">
+                                <p class="blog-desc limit-text-3">
                                     Món canh là một phần không thể thiếu trong bữa cơm gia đình
-                                    phải không nào? Chính vì vậy hôm này hãy cùng...
+                                    phải không nào? Chính vì vậy hôm này hãy cùng tôi tìm hiểu về cách
+                                    thức chế biến món ăn này nhé!
                                 </p>
                             </div>
                             <div class="blog-box">

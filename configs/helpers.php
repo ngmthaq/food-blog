@@ -30,11 +30,33 @@ function publicPath($path)
 
 function uri()
 {
-    return isLocalhost() ? str_replace("/" . DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+    $uri= isLocalhost() ? str_replace("/" . DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+    $uri = explode("?", $uri);
+
+    return $uri[0];
+}
+
+function currentUri()
+{
+    $uri = $_SERVER["REQUEST_URI"];
+    $uri = explode("?", $uri);
+
+    return $uri[0];
 }
 
 function route($route)
 {
     $dir = DIR_NAME;
     echo isLocalhost() ? "/$dir$route" : $route;
+}
+
+function reload()
+{
+    $uri = uri();
+    header("Location: $uri");
+}
+
+function redirect($path)
+{
+    header("Refresh:0; url=$path");
 }

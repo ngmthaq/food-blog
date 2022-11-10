@@ -1,6 +1,44 @@
 <?php
-$isLogin = false;
-$isAdmin = false;
+
+if (isset($_SESSION["login-error"])) {
+    unset($_SESSION["login-error"]);
+}
+
+$isLogin = isset($_SESSION["user_id"]);
+$isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] == 1;
+
+if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $_POST = [];
+    $db = new Database();
+    $data = $db->sql("SELECT * FROM users WHERE email = '$email'")->get();
+    if (count($data) > 0) {
+        $user = $data[0];
+        if ($user["password"] === $password) {
+            unset($_SESSION["login-error"]);
+            $isLogin = true;
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["role"] = $user["role"];
+            $isAdmin = $user["role"] == 1;
+        } else {
+            unset($_SESSION["user_id"]);
+            unset($_SESSION["role"]);
+            $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
+        }
+    } else {
+        unset($_SESSION["user_id"]);
+        unset($_SESSION["role"]);
+        $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
+    }
+}
+
+if (isset($_POST['logout'])) {
+    session_unset();
+    $_POST = [];
+    $isAdmin = false;
+    $isLogin = false;
+}
 
 ?>
 
@@ -16,7 +54,9 @@ $isAdmin = false;
                 <?php if ($isAdmin) : ?>
                     <a href="<?php route(ROUTE_ADMIN) ?>" id="header-post-management">Quản lý bài viết</a>
                 <?php endif; ?>
-                <a href="javascript:void(0)" id="header-logout">Đăng xuất</a>
+                <form id="logout-form" action="<?php echo currentUri() ?>" method="POST">
+                    <input type="submit" name="logout" value="Đăng xuất">
+                </form>
             <?php else : ?>
                 <a href="javascript:void(0)" id="header-register" data-toggle="modal" data-target="#register-model">
                     Đăng ký
@@ -41,21 +81,21 @@ $isAdmin = false;
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="login-form">
+                    <form id="login-form" action="<?php echo currentUri() ?>" method="post">
                         <div class="form-group">
                             <label for="login-email-input" class="required">Email</label>
-                            <input type="email" class="form-control" id="login-email-input" placeholder="Vui lòng nhập email của bạn">
-                            <small id="login-email-err" class="form-text text-danger"></small>
+                            <input type="email" class="form-control" name="email" id="login-email-input" placeholder="Vui lòng nhập email của bạn">
+                            <small id="login-email-err" class="form-text text-danger"><?php echo isset($_SESSION["login-error"]) ? $_SESSION["login-error"] : "" ?></small>
                         </div>
                         <div class="form-group">
                             <label for="login-password-input" class="required">Mật khẩu</label>
-                            <input type="password" class="form-control" id="login-password-input" placeholder="Vui lòng nhập mật khẩu của bạn">
+                            <input type="password" class="form-control" name="password" id="login-password-input" placeholder="Vui lòng nhập mật khẩu của bạn">
                             <small id="login-password-err" class="form-text text-danger"></small>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="login-form" class="btn btn-primary">Đăng nhập</button>
+                    <button type="submit" form="login-form" class="btn btn-primary" name="login">Đăng nhập</button>
                 </div>
             </div>
         </div>
@@ -101,4 +141,11 @@ $isAdmin = false;
             </div>
         </div>
     </div>
+<?php endif; ?>
+
+
+<?php if (isset($_SESSION["login-error"])) : ?>
+    <script>
+        document.querySelector("#header-login").click();
+    </script>
 <?php endif; ?>

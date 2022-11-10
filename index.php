@@ -1,12 +1,15 @@
 <?php
 
+session_start();
+
 require_once("./configs/constants.php");
 require_once("./configs/helpers.php");
 require_once("./configs/database.php");
 
 try {
     $uri = str_replace("/", "\\", $_SERVER["REQUEST_URI"]);
-    $uri = isLocalhost() ? str_replace("\\" . DIR_NAME, "", $uri) : $uri;
+    $uri = explode("?", $uri);
+    $uri = isLocalhost() ? str_replace("\\" . DIR_NAME, "", $uri[0]) : $uri[0];
     $page = DIR_PAGE_ROOT . $uri . "\\index.php";
 
     if (!file_exists($page)) {

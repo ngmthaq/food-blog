@@ -4,4 +4,6 @@
 
 <?php elseif (uri() === ROUTE_CREATE_POST) : ?>
     <script src="<?php publicPath("js/ckeditor.js") ?>"></script>
+<?php elseif (uri() === ROUTE_UPDATE_POST) : ?>
+    <script src="<?php publicPath("js/ckeditor.js") ?>"></script>
 <?php endif  ?>

@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS users (
+    id INT,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role INT DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INT,
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    image TEXT NOT NULL,
+    slug TEXT NOT NULL,
+    status INT DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id INT,
+    content VARCHAR(255) NOT NULL,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE posts
+ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE comments
+ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE comments
+ADD FOREIGN KEY (post_id) REFERENCES posts(id);

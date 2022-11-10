@@ -30,7 +30,7 @@ function publicPath($path)
 
 function uri()
 {
-    $uri= isLocalhost() ? str_replace("/" . DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+    $uri = isLocalhost() ? str_replace("/" . DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
     $uri = explode("?", $uri);
 
     return $uri[0];
@@ -59,4 +59,29 @@ function reload()
 function redirect($path)
 {
     header("Refresh:0; url=$path");
+}
+
+function convertUploadFileToB64($file)
+{
+    $fileTmp = $file['tmp_name'];
+    $type = pathinfo($fileTmp, PATHINFO_EXTENSION);
+    $data = file_get_contents($fileTmp);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+    return $base64;
+}
+
+function slug($text)
+{
+    $trans = [
+        'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'jo', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'jj',
+        'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f',
+        'х' => 'kh', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shh', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'eh', 'ю' => 'ju', 'я' => 'ja',
+    ];
+    $text  = mb_strtolower($text, 'UTF-8'); // lowercase cyrillic letters too
+    $text  = strtr($text, $trans); // transliterate cyrillic letters
+    $text  = preg_replace('/[^A-Za-z0-9 _.]/', '', $text);
+    $text  = preg_replace('/[ _.]+/', '-', trim($text));
+    $text  = trim($text, '-');
+    return $text;
 }

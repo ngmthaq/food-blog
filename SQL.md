@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS posts (
     id INT AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
+    content LONGTEXT NOT NULL,
     image TEXT NOT NULL,
     slug TEXT NOT NULL,
     status INT DEFAULT 0,

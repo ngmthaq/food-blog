@@ -5,6 +5,7 @@ session_start();
 require_once("./configs/constants.php");
 require_once("./configs/helpers.php");
 require_once("./configs/database.php");
+require_once("./configs/upload.php");
 
 try {
     $uri = str_replace("/", "\\", $_SERVER["REQUEST_URI"]);
@@ -39,6 +40,7 @@ try {
     <script src="<?php publicPath("libs/jquery-2.2.4/jquery.min.js") ?>"></script>
     <script src="<?php publicPath("libs/bootstrap-4.6.2/js/bootstrap.min.js") ?>"></script>
     <script src="<?php publicPath("libs/fontawesome-6.2.0/js/all.min.js") ?>"></script>
+    <script src="<?php publicPath("libs/ckeditor5-35.3.0/build/ckeditor.js") ?>"></script>
     <?php include("./components/_head.php") ?>
 </head>
 

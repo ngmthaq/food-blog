@@ -177,6 +177,7 @@ h6 {
 }
 
 .sidebar-layout .main-sidebar-container .main-sidebar-content {
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
   border-radius: 16px;

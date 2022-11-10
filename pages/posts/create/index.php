@@ -6,14 +6,14 @@ if (isset($_POST['create-post'])) {
         $subtitle = htmlspecialchars($_POST['subtitle']);
         $content = htmlspecialchars($_POST['content']);
         $image = $_FILES['image'];
-        $b64Image = convertUploadFileToB64($image);
-        $slug = slug($title) . "-" . time();
+        $imageUrl = uploadFile($image, "public/img/posts");
+        $slug = slug($_POST['title']) . "-" . time();
         $userId = $_SESSION['user_id'];
         $db = new Database();
         $sql = "INSERT INTO `posts` (`title`, `subtitle`, `content`, `image`, `slug`, `user_id`) 
-            VALUES ('$title', '$subtitle', '$content', '$b64Image', '$slug', $userId)";
-
+            VALUES ('$title', '$subtitle', '$content', '$imageUrl', '$slug', $userId)";
         $db->sql($sql)->execute();
+        redirect(ROUTE_GET_POSTS);
     } catch (\Throwable $th) {
         consoleLog($th->getTrace());
     }

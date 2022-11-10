@@ -83,5 +83,19 @@ function slug($text)
     $text  = preg_replace('/[^A-Za-z0-9 _.]/', '', $text);
     $text  = preg_replace('/[ _.]+/', '-', trim($text));
     $text  = trim($text, '-');
-    return $text;
+
+    return $text . "-" . time();
+}
+
+function uploadFile($file, $dir = "public/img")
+{
+    $fileName = strtolower(pathinfo($file['name'], PATHINFO_FILENAME));
+    $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $finalFileName = "$fileName.$fileExt";
+    $tmpFile = $file['tmp_name'];
+    if (!is_dir($dir)) {
+        mkdir($dir);
+    }
+
+    return move_uploaded_file($tmpFile, "$dir/$finalFileName") ? "/$dir/$finalFileName" : null;
 }

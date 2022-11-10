@@ -1,47 +1,90 @@
 <?php
 
-// Nếu tồn tại message lỗi thì xoá message
-if (isset($_SESSION["login-error"])) {
-    unset($_SESSION["login-error"]);
-}
+try {
+    // Nếu tồn tại message lỗi thì xoá message
+    if (isset($_SESSION["login-error"])) {
+        unset($_SESSION["login-error"]);
+    }
 
-// Kiểm tra user đã đăng nhập hay chưa và phân quyền của user
-$isLogin = isset($_SESSION["user_id"]);
-$isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] == 1;
+    if (isset($_SESSION["register-error"])) {
+        unset($_SESSION["register-error"]);
+    }
 
-// Bắt sự kiện người dùng đăng nhập
-if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $_POST = [];
-    $db = new Database();
-    $data = $db->sql("SELECT * FROM users WHERE email = '$email'")->get();
-    if (count($data) > 0) {
-        $user = $data[0];
-        if ($user["password"] === $password) {
-            unset($_SESSION["login-error"]);
-            $isLogin = true;
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["role"] = $user["role"];
-            $isAdmin = $user["role"] == 1;
+    // Kiểm tra user đã đăng nhập hay chưa và phân quyền của user
+    $isLogin = isset($_SESSION["user_id"]);
+    $isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] == 1;
+
+    // Bắt sự kiện người dùng đăng nhập
+    if (isset($_POST['login'])) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $_POST = [];
+        $db = new Database();
+        $data = $db->sql("SELECT * FROM users WHERE email = '$email'")->get();
+        if (count($data) > 0) {
+            $user = $data[0];
+            if ($user["password"] === $password) {
+                unset($_SESSION["login-error"]);
+                $isLogin = true;
+                $_SESSION["user_id"] = $user["id"];
+                $_SESSION["role"] = $user["role"];
+                $isAdmin = $user["role"] == 1;
+            } else {
+                unset($_SESSION["user_id"]);
+                unset($_SESSION["role"]);
+                $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
+            }
         } else {
             unset($_SESSION["user_id"]);
             unset($_SESSION["role"]);
             $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
         }
-    } else {
-        unset($_SESSION["user_id"]);
-        unset($_SESSION["role"]);
-        $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
     }
-}
 
-// Bắt sự kiện người dùng đăng xuất
-if (isset($_POST['logout'])) {
-    session_unset();
-    $_POST = [];
-    $isAdmin = false;
-    $isLogin = false;
+    // Bắt sự kiện người dùng đăng ký
+    if (isset($_POST['register'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $_POST = [];
+        $db = new Database();
+        if ($name && $email && $password) {
+            $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
+            $db->sql($sql)->execute();
+            $data = $db->sql("SELECT * FROM users WHERE email = '$email'")->get();
+            if (count($data) > 0) {
+                $user = $data[0];
+                if ($user["password"] === $password) {
+                    unset($_SESSION["login-error"]);
+                    $isLogin = true;
+                    $_SESSION["user_id"] = $user["id"];
+                    $_SESSION["role"] = $user["role"];
+                    $isAdmin = $user["role"] == 1;
+                } else {
+                    unset($_SESSION["user_id"]);
+                    unset($_SESSION["role"]);
+                    $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
+                }
+            } else {
+                unset($_SESSION["user_id"]);
+                unset($_SESSION["role"]);
+                $_SESSION["login-error"] = "Sai tài khoản hoặc mật khẩu";
+            }
+        } else {
+            $_SESSION["register-error"] = "Vui lòng nhập đúng các trường";
+        }
+    }
+
+    // Bắt sự kiện người dùng đăng xuất
+    if (isset($_POST['logout'])) {
+        session_unset();
+        $_POST = [];
+        $isAdmin = false;
+        $isLogin = false;
+    }
+} catch (\Throwable $th) {
+    include("./templates/_500.php");
+    die();
 }
 
 ?>
@@ -116,31 +159,26 @@ if (isset($_POST['logout'])) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="register-form">
+                    <form id="register-form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
                         <div class="form-group">
                             <label for="register-email-input" class="required">Họ và tên</label>
-                            <input type="text" class="form-control" id="register-name-input" placeholder="Vui lòng nhập họ tên của bạn">
-                            <small id="register-name-err" class="form-text text-danger"></small>
+                            <input type="text" class="form-control" name="name" id="register-name-input" placeholder="Vui lòng nhập họ tên của bạn">
+                            <small id="login-email-err" class="form-text text-danger"><?php echo isset($_SESSION["register-error"]) ? $_SESSION["register-error"] : "" ?></small>
                         </div>
                         <div class="form-group">
                             <label for="register-email-input" class="required">Email</label>
-                            <input type="email" class="form-control" id="register-email-input" placeholder="Vui lòng nhập email của bạn">
-                            <small id="register-emai-err" class="form-text text-danger"></small>
+                            <input type="email" class="form-control" name="email" id="register-email-input" placeholder="Vui lòng nhập email của bạn">
+                            <small id="login-email-err" class="form-text text-danger"><?php echo isset($_SESSION["register-error"]) ? $_SESSION["register-error"] : "" ?></small>
                         </div>
                         <div class="form-group">
                             <label for="register-password-input" class="required">Mật khẩu</label>
-                            <input type="password" class="form-control" id="register-password-input" placeholder="Vui lòng nhập mật khẩu của bạn">
-                            <small id="register-password-err" class="form-text text-danger"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="register-password-confirmation-input" class="required">Xác nhận mật khẩu</label>
-                            <input type="password" class="form-control" id="register-password-confirmation-input" placeholder="Vui lòng nhập mật khẩu của bạn">
-                            <small id="register-password-confirmation-err" class="form-text text-danger"></small>
+                            <input type="password" class="form-control" name="password" id="register-password-input" placeholder="Vui lòng nhập mật khẩu của bạn">
+                            <small id="login-email-err" class="form-text text-danger"><?php echo isset($_SESSION["register-error"]) ? $_SESSION["register-error"] : "" ?></small>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="register-form" class="btn btn-primary">Đăng ký</button>
+                    <button type="submit" form="register-form" name="register" class="btn btn-primary">Đăng ký</button>
                 </div>
             </div>
         </div>
@@ -151,5 +189,11 @@ if (isset($_POST['logout'])) {
 <?php if (isset($_SESSION["login-error"])) : ?>
     <script>
         document.querySelector("#header-login").click();
+    </script>
+<?php endif; ?>
+
+<?php if (isset($_SESSION["register-error"])) : ?>
+    <script>
+        document.querySelector("#header-register").click();
     </script>
 <?php endif; ?>

@@ -238,7 +238,7 @@ h6 {
 .comment-item {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 16px;
 }
 

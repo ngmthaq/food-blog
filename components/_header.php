@@ -58,7 +58,7 @@ if (isset($_POST['logout'])) {
                 <?php if ($isAdmin) : ?>
                     <a href="<?php route(ROUTE_ADMIN) ?>" id="header-post-management">Quản lý bài viết</a>
                 <?php endif; ?>
-                <form id="logout-form" action="<?php echo currentUri() ?>" method="POST">
+                <form id="logout-form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="POST">
                     <input type="submit" name="logout" value="Đăng xuất">
                 </form>
             <?php else : ?>
@@ -85,7 +85,7 @@ if (isset($_POST['logout'])) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="login-form" action="<?php echo currentUri() ?>" method="post">
+                    <form id="login-form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
                         <div class="form-group">
                             <label for="login-email-input" class="required">Email</label>
                             <input type="email" class="form-control" name="email" id="login-email-input" placeholder="Vui lòng nhập email của bạn">

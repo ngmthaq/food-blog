@@ -44,10 +44,20 @@ function currentUri()
     return $uri[0];
 }
 
-function route($route)
+function route(string $route, array $queries = [])
 {
     $dir = DIR_NAME;
-    echo isLocalhost() ? "/$dir$route" : $route;
+    $handleQueries = [];
+
+    foreach ($queries as $key => $value) {
+        $handleQueries[] = "$key=$value";
+    }
+
+    $queryString = implode("&", $handleQueries);
+
+    $result = isLocalhost() ? "/$dir$route" : $route;
+
+    echo $queryString === "" ? $result : "$result?$queryString";
 }
 
 function reload()
@@ -58,6 +68,7 @@ function reload()
 
 function redirect($path)
 {
+    $path = isLocalhost() ? "/" . DIR_NAME . $path : $path;
     header("Location: $path");
 }
 
@@ -71,20 +82,46 @@ function convertUploadFileToB64($file)
     return $base64;
 }
 
-function slug($text)
+function slug($string)
 {
-    $trans = [
-        'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'jo', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'jj',
-        'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f',
-        'х' => 'kh', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shh', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'eh', 'ю' => 'ju', 'я' => 'ja',
-    ];
-    $text  = mb_strtolower($text, 'UTF-8'); // lowercase cyrillic letters too
-    $text  = strtr($text, $trans); // transliterate cyrillic letters
-    $text  = preg_replace('/[^A-Za-z0-9 _.]/', '', $text);
-    $text  = preg_replace('/[ _.]+/', '-', trim($text));
-    $text  = trim($text, '-');
-
-    return $text . "-" . time();
+    $search = array(
+        '#(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)#',
+        '#(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)#',
+        '#(ì|í|ị|ỉ|ĩ)#',
+        '#(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)#',
+        '#(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)#',
+        '#(ỳ|ý|ỵ|ỷ|ỹ)#',
+        '#(đ)#',
+        '#(À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ)#',
+        '#(È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ)#',
+        '#(Ì|Í|Ị|Ỉ|Ĩ)#',
+        '#(Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ)#',
+        '#(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)#',
+        '#(Ỳ|Ý|Ỵ|Ỷ|Ỹ)#',
+        '#(Đ)#',
+        "/[^a-zA-Z0-9\-\_]/",
+    );
+    $replace = array(
+        'a',
+        'e',
+        'i',
+        'o',
+        'u',
+        'y',
+        'd',
+        'A',
+        'E',
+        'I',
+        'O',
+        'U',
+        'Y',
+        'D',
+        '-',
+    );
+    $string = preg_replace($search, $replace, $string);
+    $string = preg_replace('/(-)+/', '-', $string);
+    $string = strtolower($string);
+    return $string;
 }
 
 function uploadFile($file, $dir = "public/img")

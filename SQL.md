@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    id INT,
+    id INT AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(50) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS posts (
-    id INT,
+    id INT AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS comments (
-    id INT,
+    id INT AUTO_INCREMENT,
     content VARCHAR(255) NOT NULL,
     post_id INT NOT NULL,
     user_id INT NOT NULL,

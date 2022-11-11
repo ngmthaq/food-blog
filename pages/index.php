@@ -1,7 +1,7 @@
 <?php
 
 $db = new Database();
-$sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id ORDER BY created_at DESC";
+$sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.status = 1 ORDER BY created_at DESC";
 $posts = $db->sql($sql)->get();
 
 ?>

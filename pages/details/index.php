@@ -19,7 +19,7 @@ try {
     if (isset($_GET['s']) && isset($_GET['id'])) {
         $slug = $_GET['s'];
         $id = $_GET['id'];
-        $sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.slug = '$slug' AND posts.id = '$id'";
+        $sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.slug = '$slug' AND posts.id = '$id' AND posts.status = 1";
         $posts = $db->sql($sql)->get();
         if (count($posts) > 0) {
             $post = $posts[0];
